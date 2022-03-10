@@ -7,7 +7,12 @@ import matplotlib.pyplot as plt
 
 from keras.models import load_model, Model
 from keras.layers import Input, Dense, Conv2D, Flatten, BatchNormalization, LeakyReLU, add
-from keras.optimizers import SGD
+
+# from keras.optimizers import SGD
+from keras.optimizers import gradient_descent_v2
+SGD = gradient_descent_v2.SGD
+
+
 from keras import regularizers
 import tensorflow as tf
 
@@ -260,12 +265,16 @@ class Residual_CNN_tflite(Gen_Model):
 		self.model_path = run_archive_folder + game + '/run' + str(run_number).zfill(4) + "/models/version" + "{0:0>4}".format(version) + '.tflite'
 		self.interpreter = tf.lite.Interpreter(model_path=self.model_path)
 		self.interpreter.allocate_tensors()
-		self.input = self.interpreter.get_input_details()
-		self.output = self.interpreter.get_output_details()
 
 	def predict(self, x):
-		self.interpreter.set_tensor(self.input[0]['index'], x)
+		input = self.interpreter.get_input_details()
+		output = self.interpreter.get_output_details()
+
+		x = x.astype(np.float32)
+
+		self.interpreter.set_tensor(input[0]['index'], x)
 		self.interpreter.invoke()
-		out = self.interpreter.tensor(self.output)
-		return [out[0]['index'], out[1]['index']]
+		out1 = self.interpreter.get_tensor(output[0]['index'])
+		out2 = self.interpreter.get_tensor(output[1]['index'])
+		return [out2, out1]
 
