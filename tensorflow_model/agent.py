@@ -30,7 +30,7 @@ class User():
 		for action in state._allowedActions():
 			mapping[(action % 7) + 1] = action
 		allowed = sorted(list(mapping.keys()))
-		print(f"Allowed actions: {allowed}")
+		lg.logger_tourney.info(f"Allowed actions: {allowed}")
 		while action not in allowed:
 			action = int(input('Enter your chosen action: '))
 		action = mapping[action]
