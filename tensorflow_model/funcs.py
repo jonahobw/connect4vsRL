@@ -4,33 +4,33 @@ import random
 import loggers as lg
 
 from game import Game, GameState
-from model import Residual_CNN
+from model import Residual_CNN, Residual_CNN_tflite
 
 from agent import Agent, User
 
 import config
 
+
+def setup_player(env, run_version, player_version):
+    if player_version == -1:
+        return User('player1', env.state_size, env.action_size)
+
+    if config.TFLITE:
+        player_NN = Residual_CNN_tflite(config.REG_CONST, config.LEARNING_RATE, env.input_shape, env.action_size, config.HIDDEN_CNN_LAYERS)
+        player_NN.read(env.name, run_version, player_version)
+    else:
+        player_NN = Residual_CNN(config.REG_CONST, config.LEARNING_RATE, env.input_shape, env.action_size, config.HIDDEN_CNN_LAYERS)
+        if player_version > 0:
+            player_network = player_NN.read(env.name, run_version, player_version)
+            player_NN.model.set_weights(player_network.get_weights())
+    return Agent('player1', env.state_size, env.action_size, config.MCTS_SIMS, config.CPUCT, player_NN)
+
+
+
 def playMatchesBetweenVersions(env, run_version, player1version, player2version, EPISODES, logger, turns_until_tau0, goes_first = 0):
     
-    if player1version == -1:
-        player1 = User('player1', env.state_size, env.action_size)
-    else:
-        player1_NN = Residual_CNN(config.REG_CONST, config.LEARNING_RATE, env.input_shape,   env.action_size, config.HIDDEN_CNN_LAYERS)
-
-        if player1version > 0:
-            player1_network = player1_NN.read(env.name, run_version, player1version)
-            player1_NN.model.set_weights(player1_network.get_weights())   
-        player1 = Agent('player1', env.state_size, env.action_size, config.MCTS_SIMS, config.CPUCT, player1_NN)
-
-    if player2version == -1:
-        player2 = User('player2', env.state_size, env.action_size)
-    else:
-        player2_NN = Residual_CNN(config.REG_CONST, config.LEARNING_RATE, env.input_shape,   env.action_size, config.HIDDEN_CNN_LAYERS)
-        
-        if player2version > 0:
-            player2_network = player2_NN.read(env.name, run_version, player2version)
-            player2_NN.model.set_weights(player2_network.get_weights())
-        player2 = Agent('player2', env.state_size, env.action_size, config.MCTS_SIMS, config.CPUCT, player2_NN)
+    player1 = setup_player(env, run_version, player1version)
+    player2 = setup_player(env, run_version, player2version)
 
     scores, memory, points, sp_scores = playMatches(player1, player2, EPISODES, logger, turns_until_tau0, None, goes_first)
 

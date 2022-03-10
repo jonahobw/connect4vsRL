@@ -15,5 +15,5 @@ model.model.set_weights(model_network.get_weights())
 converter = tf.lite.TFLiteConverter.from_keras_model(model.model)
 tflite_model = converter.convert()
 
-with open('model.tflite', 'wb') as f:
+with open('run_archive/connect4/run0000/models/version0032.tflite', 'wb') as f:
   f.write(tflite_model)

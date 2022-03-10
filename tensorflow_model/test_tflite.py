@@ -2,7 +2,7 @@ import numpy as np
 import tensorflow as tf
 
 # Load the TFLite model and allocate tensors.
-interpreter = tf.lite.Interpreter(model_path="model.tflite")
+interpreter = tf.lite.Interpreter(model_path="run_archive/connect4/run0000/models/version0032.tflite")
 interpreter.allocate_tensors()
 
 # Get input and output tensors.
