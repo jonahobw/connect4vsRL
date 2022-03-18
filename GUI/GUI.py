@@ -4,7 +4,7 @@ from tkinter import *
 from ConnectFour import ConnectFour
 
 class GUI:
-    elementSize = 100
+    elementSize = 50
     gridBorder = 3
     gridColor = "#AAA"
     p1Color = "#4096EE"
