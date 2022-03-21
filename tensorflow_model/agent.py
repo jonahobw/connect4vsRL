@@ -26,9 +26,14 @@ class User():
 
 	def act(self, state, tau):
 		action = -1
-		print(f"Allowed actions: {state._allowedActions()}")
-		while action not in state._allowedActions():
+		mapping = {}
+		for action in state._allowedActions():
+			mapping[(action % 7) + 1] = action
+		allowed = sorted(list(mapping.keys()))
+		lg.logger_tourney.info(f"Allowed actions: {allowed}")
+		while action not in allowed:
 			action = int(input('Enter your chosen action: '))
+		action = mapping[action]
 		pi = np.zeros(self.action_size)
 		pi[action] = 1
 		value = 0
