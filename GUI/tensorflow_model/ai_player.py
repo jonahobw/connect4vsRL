@@ -32,7 +32,7 @@ def convert_game_state(state):
         while len(col) < 6:
             col.append('E') # for empty
 
-    print(state)
+    # print(state)
 
     res = []
 
