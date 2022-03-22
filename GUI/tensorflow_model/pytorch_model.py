@@ -2,8 +2,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
-import pandas as pd
-from IPython.display import display
+# import pandas as pd
+# from IPython.display import display
 
 
 class DQN(nn.Module):
@@ -58,12 +58,12 @@ class connect_x:
         self.isDone = False
         self.reward = {'win': 1, 'draw': 0.5, 'lose': -1}
 
-    def render(self):
-        rendered_board_state = self.board_state.copy().astype(str)
-        rendered_board_state[self.board_state == 0] = ' '
-        rendered_board_state[self.board_state == 1] = 'O'
-        rendered_board_state[self.board_state == 2] = 'X'
-        display(pd.DataFrame(rendered_board_state))
+    # def render(self):
+    #     rendered_board_state = self.board_state.copy().astype(str)
+    #     rendered_board_state[self.board_state == 0] = ' '
+    #     rendered_board_state[self.board_state == 1] = 'O'
+    #     rendered_board_state[self.board_state == 2] = 'X'
+    #     display(pd.DataFrame(rendered_board_state))
 
     def reset(self):
         self.__init__()
