@@ -109,6 +109,7 @@ class GUI:
                 return
             self.draw()
             self._updateCurrentPlayer()
+            self.master.update()
 
         if self.game.game_over:
             x = self.canvas.winfo_width() // 2
