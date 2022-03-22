@@ -1,5 +1,5 @@
 import numpy as np
-from .game import Game, GameState
+from .game import GameState
 from .model import Residual_CNN_tflite
 
 from .agent import Agent
@@ -8,12 +8,11 @@ from .config import *
 
 
 def setup_ai(player_version=32):
-    env = Game()
     run_version = 0
 
     player_NN = Residual_CNN_tflite()
-    player_NN.read(env.name, run_version, player_version)
-    agent = Agent('player1', env.state_size, env.action_size, MCTS_SIMS, CPUCT, player_NN)
+    player_NN.read("connect4", run_version, player_version)
+    agent = Agent('player1', 42, 42, MCTS_SIMS, CPUCT, player_NN)
     agent.mcts = None
     return agent
 

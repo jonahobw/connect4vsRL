@@ -27,9 +27,9 @@ class Agent():
 
     def simulate(self):
 
-        print('ROOT NODE...%s', self.mcts.root.state.id)
+        #print('ROOT NODE...%s', self.mcts.root.state.id)
         # self.mcts.root.state.render(lg.logger_mcts)
-        print('CURRENT PLAYER...%d', self.mcts.root.state.playerTurn)
+        #print('CURRENT PLAYER...%d', self.mcts.root.state.playerTurn)
 
         ##### MOVE THE LEAF NODE
         leaf, value, done, breadcrumbs = self.mcts.moveToLeaf()
@@ -50,9 +50,9 @@ class Agent():
 
         #### run the simulation
         for sim in range(self.MCTSsimulations):
-            print('***************************')
-            print('****** SIMULATION %d ******', sim + 1)
-            print('***************************')
+            #print('***************************')
+            #print('****** SIMULATION %d ******', sim + 1)
+            #print('***************************')
             self.simulate()
 
         #### get action values
@@ -65,10 +65,10 @@ class Agent():
 
         NN_value = -self.get_preds(nextState)[0]
 
-        print('ACTION VALUES...%s', pi)
-        print('CHOSEN ACTION...%d', action)
-        print('MCTS PERCEIVED VALUE...%f', value)
-        print('NN PERCEIVED VALUE...%f', NN_value)
+        #print('ACTION VALUES...%s', pi)
+        #print('CHOSEN ACTION...%d', action)
+        #print('MCTS PERCEIVED VALUE...%f', value)
+        #print('NN PERCEIVED VALUE...%f', NN_value)
 
         return (action, pi, value, NN_value)
 
@@ -97,12 +97,12 @@ class Agent():
 
     def evaluateLeaf(self, leaf, value, done, breadcrumbs):
 
-        print('------EVALUATING LEAF------')
+        #print('------EVALUATING LEAF------')
 
         if done == 0:
 
             value, probs, allowedActions = self.get_preds(leaf.state)
-            print('PREDICTED VALUE FOR %d: %f', leaf.state.playerTurn, value)
+            #print('PREDICTED VALUE FOR %d: %f', leaf.state.playerTurn, value)
 
             probs = probs[allowedActions]
 
@@ -111,16 +111,17 @@ class Agent():
                 if newState.id not in self.mcts.tree:
                     node = Node(newState)
                     self.mcts.addNode(node)
-                    print('added node...%s...p = %f', node.id, probs[idx])
+                    #print('added node...%s...p = %f', node.id, probs[idx])
                 else:
                     node = self.mcts.tree[newState.id]
-                    print('existing node...%s...', node.id)
+                    #print('existing node...%s...', node.id)
 
                 newEdge = Edge(leaf, node, probs[idx], action)
                 leaf.edges.append((action, newEdge))
 
         else:
-            print('GAME VALUE FOR %d: %f', leaf.playerTurn, value)
+            #print('GAME VALUE FOR %d: %f', leaf.playerTurn, value)
+            """"""
 
         return ((value, breadcrumbs))
 
@@ -153,12 +154,12 @@ class Agent():
         return preds
 
     def buildMCTS(self, state):
-        print('****** BUILDING NEW MCTS TREE FOR AGENT %s ******', self.name)
+        #print('****** BUILDING NEW MCTS TREE FOR AGENT %s ******', self.name)
         self.root = Node(state)
         self.mcts = MCTS(self.root, self.cpuct)
 
     def changeRootMCTS(self, state):
-        print('****** CHANGING ROOT OF MCTS TREE TO %s FOR AGENT %s ******', state.id, self.name)
+        #print('****** CHANGING ROOT OF MCTS TREE TO %s FOR AGENT %s ******', state.id, self.name)
         self.mcts.root = self.mcts.tree[state.id]
 
 
