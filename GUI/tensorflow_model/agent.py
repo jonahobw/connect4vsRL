@@ -3,36 +3,6 @@ import numpy as np
 
 from .MCTS import Node, MCTS, Edge
 
-# from .config import *
-# import time
-#
-# import matplotlib.pyplot as plt
-# from IPython import display
-# import pylab as pl
-
-
-class User():
-    def __init__(self, name, state_size, action_size):
-        self.name = name
-        self.state_size = state_size
-        self.action_size = action_size
-
-    def act(self, state, tau):
-        action = -1
-        mapping = {}
-        for action in state._allowedActions():
-            mapping[(action % 7) + 1] = action
-        allowed = sorted(list(mapping.keys()))
-        print(f"Allowed actions: {allowed}")
-        while action not in allowed:
-            action = int(input('Enter your chosen action: '))
-        action = mapping[action]
-        pi = np.zeros(self.action_size)
-        pi[action] = 1
-        value = 0
-        NN_value = 0
-        return (action, pi, value, NN_value)
-
 
 class Agent():
     def __init__(self, name, state_size, action_size, mcts_simulations, cpuct, model):
@@ -177,38 +147,6 @@ class Agent():
         value = values[action]
 
         return action, value
-
-    # def replay(self, ltmemory):
-    #     print('******RETRAINING MODEL******')
-    #
-    #     for i in range(TRAINING_LOOPS):
-    #         minibatch = random.sample(ltmemory, min(BATCH_SIZE, len(ltmemory)))
-    #
-    #         training_states = np.array([self.model.convertToModelInput(row['state']) for row in minibatch])
-    #         training_targets = {'value_head': np.array([row['value'] for row in minibatch])
-    #             , 'policy_head': np.array([row['AV'] for row in minibatch])}
-    #
-    #         fit = self.model.fit(training_states, training_targets, epochs=EPOCHS, verbose=1, validation_split=0,
-    #                              batch_size=32)
-    #         print('NEW LOSS %s', fit.history)
-    #
-    #         self.train_overall_loss.append(round(fit.history['loss'][EPOCHS - 1], 4))
-    #         self.train_value_loss.append(round(fit.history['value_head_loss'][EPOCHS - 1], 4))
-    #         self.train_policy_loss.append(round(fit.history['policy_head_loss'][EPOCHS - 1], 4))
-    #
-    #     plt.plot(self.train_overall_loss, 'k')
-    #     plt.plot(self.train_value_loss, 'k:')
-    #     plt.plot(self.train_policy_loss, 'k--')
-    #
-    #     plt.legend(['train_overall_loss', 'train_value_loss', 'train_policy_loss'], loc='lower left')
-    #
-    #     display.clear_output(wait=True)
-    #     display.display(pl.gcf())
-    #     pl.gcf().clear()
-    #     time.sleep(1.0)
-    #
-    #     print('\n')
-    #     self.model.printWeightAverages()
 
     def predict(self, inputToModel):
         preds = self.model.predict(inputToModel)

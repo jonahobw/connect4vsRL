@@ -1,6 +1,6 @@
 import numpy as np
 from .game import Game, GameState
-from .model import Residual_CNN, Residual_CNN_tflite
+from .model import Residual_CNN_tflite
 
 from .agent import Agent
 
@@ -11,15 +11,8 @@ def setup_ai(player_version=32):
     env = Game()
     run_version = 0
 
-    if TFLITE:
-        player_NN = Residual_CNN_tflite(REG_CONST, LEARNING_RATE, env.input_shape, env.action_size, HIDDEN_CNN_LAYERS)
-        player_NN.read(env.name, run_version, player_version)
-    else:
-        player_NN = Residual_CNN(REG_CONST, LEARNING_RATE, env.input_shape, env.action_size, HIDDEN_CNN_LAYERS)
-        if player_version > 0:
-            player_network = player_NN.read(env.name, run_version, player_version)
-            player_NN.model.set_weights(player_network.get_weights())
-
+    player_NN = Residual_CNN_tflite()
+    player_NN.read(env.name, run_version, player_version)
     agent = Agent('player1', env.state_size, env.action_size, MCTS_SIMS, CPUCT, player_NN)
     agent.mcts = None
     return agent
@@ -28,9 +21,6 @@ def setup_ai(player_version=32):
 def convert_game_state(state):
     """
     Convert the 2D game state from the GUI code to a 1D game state for the model.
-
-    :param state:
-    :return:
     """
 
     mapping = {
