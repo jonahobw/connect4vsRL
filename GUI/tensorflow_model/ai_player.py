@@ -48,7 +48,7 @@ ai_agent = setup_ai()
 
 def model_column(state):
     state = convert_game_state(state)
-    game_state = GameState(np.array(state), 1)
+    game_state = GameState(np.array(state), -1)
     res = ai_agent.act(game_state, 0)
     return res[0] % 7
 
