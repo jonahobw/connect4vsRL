@@ -1,6 +1,6 @@
 #### SELF PLAY
 EPISODES = 25
-MCTS_SIMS = 100
+MCTS_SIMS = 10
 MEMORY_SIZE = 30000
 TURNS_UNTIL_TAU0 = 10 # turn on which it starts playing deterministically
 CPUCT = 1
@@ -30,5 +30,5 @@ EVAL_EPISODES = 20
 SCORING_THRESHOLD = 1.3
 
 #### INFERENCE SETTINGS
-TFLITE = True
+TFLITE = False
 TPU = False
